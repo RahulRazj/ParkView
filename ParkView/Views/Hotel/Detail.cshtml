@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Hotel>
+
+
+<style>
+    .detail-container, .search-result {
+        padding-left: 240px;
+        padding-top: 60px;
+    }
+</style>
+
+<div class="text-center">
+    <p class="lead display-5" style="color: #db2128">
+        Pick a Destination
+    </p>
+    <p style="color: #db2128; font-size: 20px;" class="py-4">Find your 5 star hotel in India with ParkView</p>
+</div>
+
+<div class="container-fluid detail-container d-flex flex-column">
+    @foreach (var hotel in Model)
+    {
+        <div class="hotel-detail-view py-4 d-flex">
+            <div class="hotel-image">
+                <div class="card-img">
+                    <img class="card-img-top location-image" style="max-width: 300px; height: 250px" src="~/images/hotels/hotel-@(hotel.HotelId).jpeg" alt="Hotel Image">
+                </div>
+            </div>
+
+            <div class="hotel-desc px-3 d-flex flex-column">
+                <a style="text-decoration: none" asp-controller="Hotel" asp-action="HotelView" asp-route-id="@hotel.HotelId"> <p style="color: #db2128;" class="display-6 hotel-name">@hotel.HotelName</p></a>
+                <div class="amenities d-flex">
+                    <div class="people-capacity d-flex flex-column align-content-center px-3">
+                        <i class="bi bi-person" style="font-size: 24px;"></i>
+                        <p style="font-size: 13px;">3 people</p>
+                    </div>
+                    <div class="people-capacity d-flex flex-column align-content-center px-3">
+                        <img class="pt-2" src="~/images/bed.png" style="width: 30px" alt="" />
+                        <p class="pt-1" style="font-size: 13px;">3 Bed</p>
+                    </div>
+
+                    <div class="people-capacity d-flex flex-column align-content-center px-3">
+                        <i class="bi bi-triangle" style="font-size: 24px;"></i>
+                        <p style="font-size: 13px;">2800 sq.ft</p>
+                    </div>
+                </div>
+                <p style="max-width: 600px">@hotel.Description</p>
+            </div>
+        </div>
+
+    }
+</div>

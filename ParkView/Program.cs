@@ -10,6 +10,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthentication().AddGoogle(
+    googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    }
+    );
+
+builder.Services.AddAuthentication().AddFacebook(
+    facebookOptions =>
+    {
+        facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:ClientId"];
+        facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"];
+    }
+    );
+
+builder.Services.AddScoped<IHotelRepo, HotelDbRepo>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
