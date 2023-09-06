@@ -1,0 +1,45 @@
+﻿@model Location
+
+<link href="@Url.Content("~/css/site.css")" rel="stylesheet" type="text/css" />
+
+<style>
+
+    .location-card {
+        margin: 0 20px 20px 0;
+        width: 33.333%;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+    }
+
+    .city-location {
+        color: #D8D9DA;
+        position: absolute;
+        margin: 8px;
+        color: whitesmoke;
+        top: 110px;
+        text-align: center;
+    }
+
+    .location-image {
+        filter: brightness(65%) saturate(140%)
+    }
+      
+    .location-btn {
+        border: 1px #db2128 solid;
+    }
+
+        .location-btn:hover {
+            background-color: #db2128;
+            color: black;
+            border: none;
+        }
+</style>
+
+<div class="card location-card" style="width: 30%;">
+    <img class="card-img-top location-image" src=@Model.HotelImageUrl alt="Hotel Image">
+    <h4 class="city-location">@Model.City</h4>
+    <div class="text-center p-1">
+        <a class="btn location-btn" asp-controller="Hotel" asp-action="Detail" asp-route-query="@Model.City"><h5>Book Now</h5></a>
+    </div>
+</div>

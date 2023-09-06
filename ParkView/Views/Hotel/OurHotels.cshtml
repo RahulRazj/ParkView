@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Location>
+<link href="@Url.Content("~/css/site.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    .location-card {
+        margin: 40px;
+    }
+</style>
+<div class="container my-5">
+    <div class="text-center">
+        <p class="lead display-5" style="color: #db2128">
+            Pick a Destination
+        </p>
+        <p style="color: #db2128; font-size: 20px;" class="py-4">Find your 5 star hotel in India with ParkView</p>
+    </div>
+    <div class="location-container">
+        @foreach (var location in Model)
+        {
+            @Html.Partial("_HotelLocationCard", location)
+        }
+    </div>
+
+</div>

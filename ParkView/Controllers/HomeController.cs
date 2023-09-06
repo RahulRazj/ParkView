@@ -6,19 +6,25 @@ namespace ParkView.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHotelRepo _hotelRepo;
+        public IEnumerable<Location> allLocations { get; set; }
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHotelRepo hotelRepo)
         {
-            _logger = logger;
+            _hotelRepo = hotelRepo;
+        }
+        public IActionResult Index()
+        {
+            var hotelLocations = _hotelRepo.AllLocations.ToList();
+            return View(hotelLocations);
         }
 
-        public IActionResult Index()
+        public IActionResult Privacy()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult ContactUs()
         {
             return View();
         }

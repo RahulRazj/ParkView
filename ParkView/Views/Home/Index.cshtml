@@ -1,8 +1,86 @@
-﻿@{
+﻿@model List<Location>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link href="@Url.Content("~/css/site.css")" rel="stylesheet" type="text/css" />
+
+
+<style>
+    .carousel-image {
+        filter: brightness(55%) saturate(130%)
+    }
+
+    .explore-button {
+        border: 1px solid #db2128;
+    }
+
+        .explore-button:hover {
+            border: none;
+            background-color: #db2128;
+            color: black;
+        }
+
+    .carousel-header-text {
+        font-size: 22px;
+    }
+</style>
+
+
+
+<div id="carouselExample" class="carousel slide" style="width:100%; background-size:cover">
+    <div class="carousel-inner">
+        <div class="carousel-item" style="width:100%; background-size:cover">
+            <img src="~/images/carousel/carousel (13).jpg" class="d-block w-100 carousel-image" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <p class="carousel-header-text">Heaven On Earth</p>
+                <p class="display-6">ParkView Bangalore</p>
+            </div>
+        </div>
+        <div class="carousel-item active" style="width:100%; background-size:cover">
+            <img src="~/images/carousel/carousel (5).jpg" class="d-block w-100 carousel-image" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <p class="carousel-header-text">Designed For Relaxation</p>
+                <p class="display-6">ParkView Chennai</p>
+            </div>
+        </div>
+        <div class="carousel-item" style="width:100%; background-size:cover">
+            <img src="~/images/carousel/carousel (9).jpg" class="d-block w-100 carousel-image" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <p class="carousel-header-text">A Tradition Of Trust</p>
+                <p class="display-6">ParkView Hyderabad</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+
+<p class="lead display-6 text-center pt-4" style="color: #db2128">Explore Hotels at different Locations</p>
+
+<div class="container-location-card d-flex justify-content-center py-4 px-3">
+
+    @for (int i = 0; i < 4; i++)
+    {
+        @Html.Partial("_HotelLocationCard", Model[i])
+    }
+</div>
+<div class="d-flex justify-content-center mb-5">
+    <a asp-controller="Hotel" asp-action="OurHotels" class="btn explore-button"><h5>Explore More Hotels</h5></a>
+</div>
+
+<hr />
+
+<div class="food-experience py-3">
+    <p class="text-center lead display-6" style="color: #db2128">Gastronomical Experience</p>
+    <video autoplay preload="auto" loop muted id="myVideo">
+        <source src="https://www.thelalit.com/wp-content/uploads/2023/06/gastronomical.mp4" />
+    </video>
+</div>
+
