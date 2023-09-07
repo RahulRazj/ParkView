@@ -18,7 +18,7 @@
         .explore-button:hover {
             border: none;
             background-color: #db2128;
-            color: black;
+            color: white;
         }
 
     .carousel-header-text {
@@ -28,7 +28,7 @@
 
 
 
-<div id="carouselExample" class="carousel slide" style="width:100%; background-size:cover">
+<div id="carouselExample" class="carousel slide" style="width:100%; height: 90%; background-size:cover">
     <div class="carousel-inner">
         <div class="carousel-item" style="width:100%; background-size:cover">
             <img src="~/images/carousel/carousel (13).jpg" class="d-block w-100 carousel-image" alt="...">
@@ -71,8 +71,8 @@
         @Html.Partial("_HotelLocationCard", Model[i])
     }
 </div>
-<div class="d-flex justify-content-center mb-5">
-    <a asp-controller="Hotel" asp-action="OurHotels" class="btn explore-button"><h5>Explore More Hotels</h5></a>
+<div class="d-flex justify-content-center">
+    <a class="btn explore-button" asp-controller="Hotel" asp-action="OurHotels"><b>Explore More Hotels</b></a>
 </div>
 
 <hr />

@@ -4,6 +4,18 @@
     ViewData["Title"] = "Register";
 }
 
+<style>
+    .login-button {
+        border: 1px solid #db2128;
+    }
+
+        .login-button:hover {
+            border: none;
+            color: whitesmoke;
+            background-color: #db2128
+        }
+</style>
+
 <h1 class="d-flex justify-content-center lead display-5">@ViewData["Title"]</h1>
 
 <div class="row d-flex flex-column align-items-center">
@@ -45,7 +57,7 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg login-button">Register</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
@@ -69,9 +81,8 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <i class="bi bi-google" type="submit" value="@provider.Name"></i>
 
-                                    //<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn login-button" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
                             </p>
                         </div>

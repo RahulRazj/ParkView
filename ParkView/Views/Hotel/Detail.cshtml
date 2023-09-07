@@ -4,21 +4,44 @@
 <style>
     .detail-container, .search-result {
         padding-left: 240px;
-        padding-top: 60px;
+        padding-top: 20px;
     }
+
+    #search-city {
+        color: #db2128
+    }
+
+    .view-room-btn {
+        border: 1px solid #db2128;
+    }
+
+        .view-room-btn:hover {
+            border: none;
+            background-color: #db2128;
+            color: white;
+        }
 </style>
 
 <div class="text-center">
-    <p class="lead display-5" style="color: #db2128">
-        Pick a Destination
-    </p>
     <p style="color: #db2128; font-size: 20px;" class="py-4">Find your 5 star hotel in India with ParkView</p>
 </div>
+
+@if (Model.Count() == 0)
+{
+    <p class="lead display-5 text-center">No Hotels with <span id="search-city"> "@Context.Request.Query["query"]"</span> keyword</p>
+    <div class="d-flex justify-content-center">
+        <img style="width: 140px;" src="~/images/empty.png" />
+    </div>
+}
+else
+{
+    <p class="lead display-5 text-center">@Model.Count() @(Model.Count() > 1 ? "Hotels" : "Hotel") in <span id="search-city"> "@Context.Request.Query["query"]"</span></p>
+}
 
 <div class="container-fluid detail-container d-flex flex-column">
     @foreach (var hotel in Model)
     {
-        <div class="hotel-detail-view py-4 d-flex">
+        <div class="hotel-detail-view my-3 d-flex">
             <div class="hotel-image">
                 <div class="card-img">
                     <img class="card-img-top location-image" style="max-width: 300px; height: 250px" src="~/images/hotels/hotel-@(hotel.HotelId).jpeg" alt="Hotel Image">
@@ -43,6 +66,10 @@
                     </div>
                 </div>
                 <p style="max-width: 600px">@hotel.Description</p>
+                <div>
+                    <a asp-controller="Hotel" asp-action="HotelView" asp-route-id="@hotel.HotelId" class="btn view-room-btn">View Rooms</a>
+                </div>
+
             </div>
         </div>
 

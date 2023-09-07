@@ -10,7 +10,7 @@ namespace ParkView.Models
         {
             _dbContext = dbContext;
         }
-        public IEnumerable<Hotel> AllHotels => _dbContext.Hotels.OrderBy(hotel => hotel.HotelName).Include(hotel => hotel.Location);
+        public IEnumerable<Hotel> AllHotels => _dbContext.Hotels.OrderBy(hotel => hotel.HotelName).Include(hotel => hotel.Location).Include(hotel => hotel.Rooms).ThenInclude(room => room.RoomType);
 
         public IEnumerable<Location> AllLocations => _dbContext.Locations.OrderBy(location => location.City);
 

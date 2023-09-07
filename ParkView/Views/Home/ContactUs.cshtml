@@ -1,21 +1,19 @@
 ﻿<style>
     .item {
         text-align: center;
-    }
-
-    body {
         font-family: Arial, sans-serif;
     }
 
-    h1 {
+
+    .h1-style {
         color: #333;
     }
 
-    h2 {
+    .h2-style {
         color: #555;
     }
 
-    p {
+    .p-style {
         line-height: 1.4;
     }
 
@@ -36,10 +34,11 @@
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         text-align: center;
+        font-family: Arial, sans-serif;
     }
 
     /* Style headings */
-    h1 {
+    .h1-style {
         color: #333;
     }
 
@@ -68,7 +67,7 @@
         resize: vertical;
     }
 
-    button {
+    .button-style {
         background-color: #333;
         color: #fff;
         border: none;
@@ -78,9 +77,9 @@
         transition: background-color 0.3s ease;
     }
 
-        button:hover {
-            background-color: #555;
-        }
+    button:hover {
+        background-color: #555;
+    }
 
 </style>
 
@@ -90,13 +89,13 @@
 
     <div class="item">
 
-        <h1>
+        <h1 class="h1-style">
             We remain at your service at The Park view
         </h1>
 
         <hr />
 
-        <h2>Main Office</h2>
+        <h2 class="h2-style">Main Office</h2>
 
         <h5>Park View Limited</h5>
 
@@ -106,18 +105,18 @@
 
         <div class="d-flex justify-content-center">
             <i class="bi bi-telephone px-2"></i>
-            <p> +91 11 4444 7777</p>
+            <p class="p-style"> +91 11 4444 7777</p>
         </div>
 
         <div class="d-flex justify-content-center">
             <i class="bi bi-envelope px-2"></i>
-            <p>contact@parkView.com</p>
+            <p class="p-style">contact@parkView.com</p>
         </div>
 
     </div>
 
     <div class="container">
-        <h1>Contact Us</h1>
+        <h1 class="h1-style">Contact Us</h1>
         <form id="contact-form">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -131,7 +130,7 @@
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
             </div>
-            <button type="submit">Submit</button>
+            <button class="button-style" type="submit">Submit</button>
         </form>
     </div>
 

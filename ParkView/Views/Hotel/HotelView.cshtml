@@ -1,3 +1,63 @@
 ﻿@model Hotel
 
-<h1>@Model.HotelName</h1>
+
+<style>
+    #hotel-name {
+        color: #db2128;
+    }
+
+
+    .amenities-icon {
+        width: 30px;
+        margin: 10px;
+    }
+
+    .book-room-btn {
+        border: 1px solid #db2128;
+    }
+
+        .book-room-btn:hover {
+            border: none;
+            background-color: #db2128;
+            color: whitesmoke;
+        }
+
+</style>
+
+<p class="lead display-6 d-flex justify-content-center p-5">Rooms in <span id="hotel-name"> "@Model.HotelName"</span> - @Model.Location.City</p>
+
+<div class="container-fluid room-detail-detail">
+    @foreach (var room in Model.Rooms)
+    {
+        <div class="room-detail-view py-4 d-flex justify-content-center">
+            <div class="room-image">
+                <div class="card-img">
+                    <img class="card-img-top location-image" style="max-width: 300px; height: 250px" src="~/images/rooms/@(room.RoomTypeId).jpeg" alt="Hotel Image">
+                </div>
+            </div>
+
+            <div class="hotel-desc px-3 d-flex flex-column">
+                <a style="text-decoration: none" asp-controller="Booking" asp-action="Book" asp-route-hotelId="@Model.HotelId" asp-route-roomId="@room.RoomId"> <p style="color: #db2128;" class="display-6 hotel-name">@room.RoomType.TypeName</p></a>
+                <p style="max-width: 600px">@room.RoomType.Description</p>
+                <div class="amenities d-flex">
+                    <div class="d-flex justify-content-center">
+                        <img class="amenities-icon" src="~/images/amenities/air-conditioner.png">
+                        <img class="amenities-icon" src="~/images/amenities/fitness.png">
+                        <img class="amenities-icon" src="~/images/amenities/martini.png">
+                        <img class="amenities-icon" src="~/images/amenities/pool.png">
+                        <img class="amenities-icon" src="~/images/amenities/swimming-pool.png">
+                        <img class="amenities-icon" src="~/images/amenities/television.png">
+                        <img class="amenities-icon" src="~/images/amenities/wi-fi.png">
+                    </div>
+                </div>
+                <div class="room-price d-flex">
+                    <i class="bi bi-currency-rupee"></i>
+                    <p style="font-size: 18px; color:#db2128">@room.PricePerNight / night</p>
+                </div>
+                <div>
+                    <a asp-controller="Booking" asp-action="Book" asp-route-hotelId="@Model.HotelId" asp-route-roomId="@room.RoomId" class="btn book-room-btn">Book Now</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

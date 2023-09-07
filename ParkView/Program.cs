@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkView.Models;
+using Stripe;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ParkViewDbConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAuthentication().AddGoogle(
@@ -27,6 +29,10 @@ builder.Services.AddAuthentication().AddFacebook(
     );
 
 builder.Services.AddScoped<IHotelRepo, HotelDbRepo>();
+builder.Services.AddScoped<IRoomRepo, RoomDbRepo>();
+builder.Services.AddScoped<IBookingRepo, BookingDbRepo>();
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -9,6 +9,10 @@
     {
       "library": "Swiper@10.2.0",
       "destination": "wwwroot/lib/Swiper/"
+    },
+    {
+      "library": "flatpickr@4.6.13",
+      "destination": "wwwroot/lib/flatpickr/"
     }
   ]
 }

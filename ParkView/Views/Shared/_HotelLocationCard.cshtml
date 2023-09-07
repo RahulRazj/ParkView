@@ -24,22 +24,27 @@
     .location-image {
         filter: brightness(65%) saturate(140%)
     }
-      
+
+        .location-image:hover {
+            filter: brightness(95%) saturate(120%)
+        }
+
     .location-btn {
         border: 1px #db2128 solid;
     }
 
         .location-btn:hover {
             background-color: #db2128;
-            color: black;
+            color: white;
             border: none;
         }
+
 </style>
 
 <div class="card location-card" style="width: 30%;">
     <img class="card-img-top location-image" src=@Model.HotelImageUrl alt="Hotel Image">
     <h4 class="city-location">@Model.City</h4>
-    <div class="text-center p-1">
-        <a class="btn location-btn" asp-controller="Hotel" asp-action="Detail" asp-route-query="@Model.City"><h5>Book Now</h5></a>
+    <div class="text-center py-1">
+        <a class="btn location-btn" asp-controller="Hotel" asp-action="Detail" asp-route-query="@Model.City">Book Now</a>
     </div>
 </div>

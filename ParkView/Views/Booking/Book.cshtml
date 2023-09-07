@@ -1,0 +1,271 @@
+﻿@model ParkView.ViewModels.BookingViewModel
+
+<style>
+    .payment-info {
+        background-color: whitesmoke
+    }
+
+    .children-select {
+        margin-left: 120px;
+    }
+
+    .booking-info-display {
+        margin: 0;
+    }
+
+    .checkout-button {
+        border: 1px solid #db2128;
+    }
+
+        .checkout-button:hover {
+            border: none;
+            color: whitesmoke;
+            background-color: #db2128;
+        }
+
+    .booking-services {
+        padding-right: 100px
+    }
+</style>
+
+
+<div class="container-fluid py-5 d-flex justify-content-center">
+    <div class="hotel-detail-view my-3 d-flex">
+        <div class="hotel-image">
+            <div class="card-img">
+                <img class="card-img-top location-image" style="max-width: 300px; height: 250px" src="~/images/rooms/@(Model.Room.RoomTypeId).jpeg" alt="Hotel Image">
+            </div>
+        </div>
+
+        <div class="hotel-desc px-3 d-flex flex-column">
+            <h3 style="color: #db2128;" class="hotel-name">@Model.Hotel.HotelName</h3>
+
+            <p class="text-muted" style="max-width: 600px">@Model.Hotel.Description</p>
+
+            <h4>RoomType: @Model.Room.RoomType.TypeName</h4>
+
+            <div class="room-price d-flex">
+                <i class="bi bi-currency-rupee"></i>
+                <p style="font-size: 18px; color:#db2128">@Model.Room.PricePerNight / night</p>
+            </div>
+
+            <h5 class="pt-4">Services</h5>
+
+            <div class="d-flex flex-column ">
+                <p>Cab Pickup & Drop <b>(upto 50kms) - Rs. 2000</b></p>
+                <p>Lunch & Dinner <b>(Veg & Non-veg) - Rs. 1200 / person / day</b></p>
+            </div>
+
+        </div>
+    </div>
+    <div class="card shadow payment-info px-4 py-2 mx-4">
+        <form asp-controller="Booking" asp-action="CheckOut">
+
+            <input type="text" name="hotelId" value="@Model.Hotel.HotelId.ToString()" hidden />
+            <input type="text" name="roomId" value="@Model.Room.RoomId.ToString()" hidden />
+
+            <h3 style="color: #db2128;" class="text-center">Your Stay</h3>
+            <hr />
+            <div class="d-flex justify-content-center">
+                <h5 class="px-4">Checkin Date</h5>
+                <h5 class="px-4">Checkout Date</h5>
+            </div>
+            <div class="d-flex justify-content-center">
+
+                <div id="flatpickrcontainer1" class="px-2 flatpickr">
+                    <input name="checkinDate" style="max-width: 85%" type="text" id="checkInDate" placeholder="Select Checkin Date" value="" />
+                </div>
+                <div id="flatpickrcontainer2" class="px-2">
+                    <input name="checkoutDate" style="max-width: 85%" type="text" id="checkOutDate" placeholder="Select Checkout Date" value="" />
+                </div>
+            </div>
+
+            <div class="d-flex p-2">
+                <div class="d-flex flex-column align-items-center">
+                    <label>No of adults</label>
+                    <select id="adultsSelect" style="width:fit-content" name="noOfAdults" onchange="changeSelected('adultsSelect', 'noOfAdultsValue')" class="form-select" aria-label="Default select example">
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="d-flex flex-column align-items-center children-select">
+                    <label>No of childrens</label>
+                    <select id="childrensSelect" style="width:fit-content" name="noOfChildrens" onchange="changeSelected('childrensSelect', 'noOfChildrensValue')" class="form-select" aria-label="Default select example">
+                        <option selected value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="booking-services d-flex align-item-center justify-content-around">
+                <div class="form-check">
+                    <input class="form-check-input" name="cabCheckBox" onchange="handleServices('cabCheckBox', 'cab')" type="checkbox" value="yes" id="cabCheckBox">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Cab
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="foodCheckBox" onchange="handleServices('foodCheckBox', 'food')" type="checkbox" value="yes" id="foodCheckBox">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Food
+                    </label>
+                </div>
+            </div>
+
+            <hr />
+            <div class="booking-info">
+                <p class="text-muted booking-info-display">Checkin Date: <span id="checkInDateValue"></span></p>
+                <p class="text-muted booking-info-display">Checkout Date: <span id="checkOutDateValue"></span></p>
+                <p class="text-muted booking-info-display">No of adults: <span id="noOfAdultsValue">1</span></p>
+                <p class="text-muted booking-info-display">No of childrens: <span id="noOfChildrensValue">0</span></p>
+                <p class="text-muted booking-info-display">No of days: <span id="noOfDayStay">1</span></p>
+            </div>
+            <hr />
+            <div class="price-breakup">
+                <h6>Price for room: <span id="priceForRoom">@Model.Room.PricePerNight</span></h6>
+                <h6 id="priceForChildren"></h6>
+                <h6 id="priceForCab"></h6>
+                <h6 id="priceForFood"></h6>
+                <h5 id="totalPriceBooking">Total Amount: @Model.Room.PricePerNight</h5>
+            </div>
+            <hr />
+            <input style="width: 100%" type="submit" class="btn checkout-button" value="Check Out" />
+        </form>
+
+
+    </div>
+</div>
+
+<script>
+
+    let totalRoomPrice = @Model.Room.PricePerNight;
+    let totalChildrenPrice = 0;
+    let totalCabPrice = 0;
+    let totalFoodPrice = 0;
+
+    let daysDifference = 1;
+    let priceForChildrenStay = 2500;
+
+    const fillValueWithId = (id, value) => document.getElementById(id).value = value;
+
+    const fillInnerHtml = (id, value) => document.getElementById(id).innerHTML = value;
+
+    const updatePricing = (id, forAdults) => {
+        if (forAdults) {
+            handleServices('foodCheckBox', 'food');
+        }
+        const noOfGuests = +document.getElementById(id).value;
+        if (forAdults) {
+            if (noOfGuests > 2) {
+                totalRoomPrice = (@Model.Room.PricePerNight + (noOfGuests - 2) * 0.25 * @Model.Room.PricePerNight) * daysDifference;
+                fillInnerHtml("priceForRoom", totalRoomPrice)
+            } else {
+                totalRoomPrice = @Model.Room.PricePerNight * daysDifference
+                fillInnerHtml("priceForRoom", totalRoomPrice)
+            }
+        } else {
+            if (noOfGuests > 0) {
+                totalChildrenPrice = priceForChildrenStay * noOfGuests
+                fillInnerHtml("priceForChildren", `Price for children: ${totalChildrenPrice}`)
+            } else {
+                totalChildrenPrice = 0;
+                fillInnerHtml("priceForChildren", ``)
+            }
+        }
+    }
+
+    const changeSelected = (id, valueId) => {
+        fillInnerHtml(valueId, document.getElementById(id).value);
+        updatePricing(id, id === "adultsSelect");
+        updateTotalAmount();
+    }
+
+
+    const handleServices = (elemId, service) => {
+        const elem = document.getElementById(elemId);
+
+        if (elem.checked && service === 'cab') {
+            totalCabPrice = 2000;
+            fillInnerHtml("priceForCab", "Price for cab: Rs. 2000")
+        } else if (service === 'cab' && !elem.checked) {
+            totalCabPrice = 0;
+            fillInnerHtml("priceForCab", "")
+        }
+
+
+        if (elem.checked && service === 'food') {
+            const noOfGuests = +document.getElementById("adultsSelect").value;
+            totalFoodPrice = 1200 * +daysDifference * noOfGuests;
+            fillInnerHtml("priceForFood", `Price for food: ${totalFoodPrice}`)
+        } else if (service == 'food' && !elem.checked) {
+            totalFoodPrice = 0;
+            fillInnerHtml("priceForFood", "");
+        }
+        updateTotalAmount();
+    }
+
+
+    const updateTotalAmount = () => {
+        const totalAmount = totalCabPrice + totalFoodPrice + totalRoomPrice + totalChildrenPrice;
+        fillInnerHtml("totalPriceBooking", `Total Amount: Rs. ${totalAmount}`);
+    }
+
+
+    const getFormattedDate = date => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
+
+    let checkinDate = new Date;
+    let checkoutDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+
+    fillValueWithId("checkInDate", getFormattedDate(checkinDate));
+    fillValueWithId("checkOutDate", getFormattedDate(checkoutDate));
+
+
+    fillInnerHtml("checkInDateValue", document.getElementById("checkInDate").value);
+    fillInnerHtml("checkOutDateValue", document.getElementById("checkOutDate").value);
+
+
+    let selectedValue = document.getElementById("adultsSelect");
+
+    document.getElementById("flatpickrcontainer1").flatpickr(
+        {
+            minDate: checkinDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                checkinDate = new Date(selectedDates)
+                checkoutDate = new Date(checkinDate.getTime() + 24 * 60 * 60 * 1000)
+                fillValueWithId("checkInDate", dateStr)
+                fillValueWithId("checkOutDate", getFormattedDate(checkoutDate))
+
+                fillInnerHtml("checkInDateValue", document.getElementById("checkInDate").value);
+                fillInnerHtml("checkOutDateValue", document.getElementById("checkOutDate").value);
+                daysDifference = Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                console.log("daysDifferencedaysDifference", daysDifference);
+                fillInnerHtml("noOfDayStay", daysDifference);
+                updatePricing("adultsSelect", true);
+                handleServices('foodCheckBox', 'food');
+                updateTotalAmount();
+
+                document.getElementById("flatpickrcontainer2").flatpickr({
+                    minDate: checkoutDate,
+                    onChange: function (selectedDates, dateStr, instance) {
+                        let currCheckoutDate = new Date(selectedDates)
+                        checkoutDate = new Date(currCheckoutDate.getTime() + 24 * 60 * 60 * 1000)
+                        fillValueWithId("checkOutDate", dateStr)
+                        fillInnerHtml("checkOutDateValue", document.getElementById("checkOutDate").value);
+                        daysDifference = Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24)) - 1;
+                        fillInnerHtml("noOfDayStay", daysDifference);
+                        console.log("daysDifferencedaysDifference", daysDifference);
+                        updatePricing("adultsSelect", true);
+                        handleServices('foodCheckBox', 'food');
+                        updateTotalAmount();
+                    }
+                })
+            }
+        });
+
+</script>
