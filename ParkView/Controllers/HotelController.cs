@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ParkView.Models;
+using ParkView.Models.IRepositories;
 
 namespace ParkView.Controllers
 {

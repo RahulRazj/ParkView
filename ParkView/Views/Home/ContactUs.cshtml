@@ -68,18 +68,14 @@
     }
 
     .button-style {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 3px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        border: 1px solid #db2128;
     }
 
-    button:hover {
-        background-color: #555;
-    }
+        .button-style:hover {
+            border: none;
+            background-color: #db2128;
+            color: whitesmoke;
+        }
 
 </style>
 
@@ -117,7 +113,7 @@
 
     <div class="container">
         <h1 class="h1-style">Contact Us</h1>
-        <form id="contact-form">
+        <form asp-controller="Home" asp-action="HandleContact" id="contact-form">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required>
@@ -130,7 +126,7 @@
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
             </div>
-            <button class="button-style" type="submit">Submit</button>
+            <input type="submit" class="btn button-style" value="Submit" />
         </form>
     </div>
 

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkView.Models;
+using ParkView.Models.IRepositories;
+using ParkView.Utils;
 using ParkView.ViewModels;
-using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace ParkView.Controllers
@@ -12,18 +13,23 @@ namespace ParkView.Controllers
         private readonly IHotelRepo _hotelRepo;
         private readonly IRoomRepo _roomRepo;
         private readonly IBookingRepo _bookingRepo;
+        private readonly ITransactionRepo _transactionRepo;
+        private readonly IUserRepo _userRepo;
 
-        public BookingController(IHotelRepo hotelRepo, IRoomRepo roomRepo, IBookingRepo bookingRepo)
+        public BookingController(IHotelRepo hotelRepo, IRoomRepo roomRepo, IBookingRepo bookingRepo, ITransactionRepo transactionRepo, IUserRepo userRepo)
         {
             _hotelRepo = hotelRepo;
             _roomRepo = roomRepo;
             _bookingRepo = bookingRepo;
+            _transactionRepo = transactionRepo;
+            _userRepo = userRepo;
         }
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult Book(int hotelId, int roomId)
         {
             var hotel = _hotelRepo.GetHotelById(hotelId);
@@ -37,7 +43,7 @@ namespace ParkView.Controllers
             return View(bookingViewModel);
         }
 
-        private int DaysDifferenceDateOnlyConverted(DateOnly d1, DateOnly d2) => (new DateTime(d1.Year, d1.Month, d1.Day) - new DateTime(d2.Year, d2.Month, d2.Day)).Days;
+        private int GetDayDifferenceDateOnly(DateOnly d1, DateOnly d2) => (new DateTime(d1.Year, d1.Month, d1.Day) - new DateTime(d2.Year, d2.Month, d2.Day)).Days;
 
 
         [Authorize]
@@ -61,7 +67,7 @@ namespace ParkView.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var daysDifference = DaysDifferenceDateOnlyConverted(outDate, inDate);
+            var daysDifference = GetDayDifferenceDateOnly(outDate, inDate);
 
             var roomPrice = room.PricePerNight;
             var adults = int.Parse(noOfAdults);
@@ -123,69 +129,60 @@ namespace ParkView.Controllers
 
             _bookingRepo.SaveBooking(booking);
 
-            decimal totalDecimalPrice = (decimal)totalPrice;
+
 
             // save the transactions in transactions table with payment - inititated
-            return RedirectToAction("StripePayment", totalDecimalPrice);
-
-        }
-
-
-        public IActionResult StripePayment(decimal totalAmount)
-        {
-            var baseUrl = "https://localhost:7149/";
-
-            decimal totalAmountInCents = totalAmount * 100;
-
-            //decimal minimumAmountInCents = 50;
-
-            //if (totalAmountInCents < minimumAmountInCents)
-            //{
-            //    totalAmountInCents = minimumAmountInCents;
-            //}
-
-
-
-            var options = new Stripe.Checkout.SessionCreateOptions
+            var transaction = new Transaction()
             {
-                SuccessUrl = baseUrl + $"Reservation/ReservationSuccess", // callback success url
-                CancelUrl = baseUrl + $"Reservation/ReservationFail",  // callback failure url
-                PaymentMethodTypes = new List<string> { "card" },
-                LineItems = new List<SessionLineItemOptions>
-                {
-                    new SessionLineItemOptions
-                    {
-                        PriceData = new SessionLineItemPriceDataOptions
-                        {
-                            UnitAmount = (long)totalAmountInCents,
-                            Currency = "inr",
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
-                            {
-                                Name = "Booking Payment",
-                            }
-                        },
-                        Quantity = 1,
-                    }
-                },
-                Mode = "payment",
+                BookingId = booking.BookingId,
+                UserId = userId,
+                TotalPrice = totalPrice,
+                PaymentStatus = PaymentStatus.INITIATED,
+                CreatedAt = DateTime.Now
             };
 
+            _transactionRepo.AddTransaction(transaction);
+
+            decimal totalDecimalPrice = (decimal)totalPrice;
 
 
-            var service = new Stripe.Checkout.SessionService();
-            var session = service.Create(options);
+            return RedirectToAction("StripePayment", "Payment", new { totalAmount = totalDecimalPrice, transactionId = transaction.TransactionId });
 
-
-
-            //TempData["sessionId"] = session.Id;
-
-
-
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
         }
+
+        [Authorize]
+        public IActionResult ViewBooking()
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var bookings = _bookingRepo.GetCompletedBookings(userId);
+            return View(bookings);
+        }
+
+        [HttpGet]
+        public ActionResult DownloadPdf(int bookingId)
+        {
+            string fileName = "Invoice.pdf";
+
+            var booking = _bookingRepo.GetBookingById(bookingId);
+
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var user = _userRepo.GetUserById(userId);
+
+            var htmlContent = Utils.Utils.GetInvoiceTemplate(user.UserName, booking.CreatedAt.ToString("yyyy-MM-dd"), booking.BookingId.ToString(), booking.RoomPrice.ToString(), booking.CabPrice.ToString(), booking.MealPrice.ToString(), booking.CheckInDate.ToString("yyyy-MM-dd"), booking.TotalPrice.ToString());
+
+            var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
+            var pdfAsBytes = htmlToPdf.GeneratePdf(htmlContent);
+            return File(pdfAsBytes, "application/pdf", fileName);
+        }
+
+
 
 
 
     }
+
 }

@@ -29,6 +29,10 @@
 <div class="container-fluid room-detail-detail">
     @foreach (var room in Model.Rooms)
     {
+        if(room.TotalRoomsAvailable <= 0)
+        {
+            continue;
+        }
         <div class="room-detail-view py-4 d-flex justify-content-center">
             <div class="room-image">
                 <div class="card-img">

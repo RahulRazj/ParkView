@@ -9,6 +9,7 @@
 
 
 	<ItemGroup>
+		<PackageReference Include="HtmlRenderer.Core" Version="1.5.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
@@ -21,6 +22,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="NReco.PdfGenerator" Version="1.2.1" />
+		<PackageReference Include="RestSharp" Version="110.2.0" />
 		<PackageReference Include="Stripe.net" Version="42.3.0" />
 	</ItemGroup>
 

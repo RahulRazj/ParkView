@@ -48,6 +48,7 @@
                 <i class="bi bi-currency-rupee"></i>
                 <p style="font-size: 18px; color:#db2128">@Model.Room.PricePerNight / night</p>
             </div>
+            <p class="text-muted">(price for up to 2 adults, every extra adult will be charged 25% of the room price)</p>
 
             <h5 class="pt-4">Services</h5>
 
@@ -214,12 +215,21 @@
         fillInnerHtml("totalPriceBooking", `Total Amount: Rs. ${totalAmount}`);
     }
 
+    const getDate = (date, m) => {
+        if(m === "m") {
+            const month = date.getMonth() + 1;
+            return +month < 10 ? `0${month}` : month;
+        } else {
+            const day = date.getDate();
+            return +day < 10 ? `0${day}` : day;
+        }
+    }
 
-    const getFormattedDate = date => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-
+    const getFormattedDate = date => `${date.getFullYear()}-${getDate(date, "m")}-${getDate(date, "d")}`;
 
     let checkinDate = new Date;
     let checkoutDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    //console.log("asdfsdafdasfsa", getMonth(checkinDate));
 
 
     fillValueWithId("checkInDate", getFormattedDate(checkinDate));

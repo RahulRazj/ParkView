@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace ParkView.Models
@@ -20,6 +21,8 @@ namespace ParkView.Models
         public double ChildrensPrice { get; set; }
         public double CabPrice { get; set; }
         public double MealPrice { get; set; }
+        [DefaultValue("false")]
+        public bool IsBookingComplete { get; set; }
         public DateTime CreatedAt { get; set; }
         
 

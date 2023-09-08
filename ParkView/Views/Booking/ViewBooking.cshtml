@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Booking>
+
+<br />
+<br />
+
+<div class="container-fluid" style="min-height: 100%">
+    <p class="lead display-5 text-center py-3">Your Past Hotel Booking</p>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th>
+                        Hotel Name
+                    </th>
+                    <th>
+                        CheckIn Date
+                    </th>
+                    <th>
+                        CheckOut Date
+                    </th>
+                    <th>
+                        Total Amount
+                    </th>
+                    <th>
+                        Booked At
+                    </th>
+                    <th>
+                        Download Invoice
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr class="text-center">
+                        <td>
+                            @booking.HotelName
+                        </td>
+                        <td>
+                            @booking.CheckInDate.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @booking.CheckOutDate.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @booking.TotalPrice
+                        </td>
+                        <td>
+                            @booking.CreatedAt.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            <a asp-controller="Booking" asp-action="DownloadPdf" asp-route-bookingId="@booking.BookingId"><i class="bi bi-download"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const downloadInvoice = bookingId => {
+
+    }
+</script>

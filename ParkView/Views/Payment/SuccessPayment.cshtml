@@ -1,0 +1,22 @@
+﻿<br />
+<br />
+<br />
+
+<style>
+    .view-booking-btn {
+        border: 1px solid #db2128;
+    }
+
+    .view-booking-btn:hover{
+        border: none;
+            background-color: #db2128;
+            color: whitesmoke;
+    }
+</style>
+<div class="container-fluid">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <p class="lead display-6 text-center py-3">Payment Successful</p>
+        <img style="width:200px" src="~/images/success.gif">
+        <a asp-controller="Booking" asp-action="ViewBooking" class="btn view-booking-btn">See your Bookings</a>
+    </div>
+</div>

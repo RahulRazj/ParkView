@@ -17,6 +17,7 @@ namespace ParkView.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ApplicationUser> User { get; set; }
+        public DbSet<ContactUsMessage> ContactMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

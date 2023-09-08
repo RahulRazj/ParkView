@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkView.Models;
+using ParkView.Models.DbRepos;
+using ParkView.Models.DbRepositories;
+using ParkView.Models.IRepositories;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +34,9 @@ builder.Services.AddAuthentication().AddFacebook(
 builder.Services.AddScoped<IHotelRepo, HotelDbRepo>();
 builder.Services.AddScoped<IRoomRepo, RoomDbRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingDbRepo>();
+builder.Services.AddScoped<ITransactionRepo, TransactionDbRepo>();
+builder.Services.AddScoped<IUserRepo, UserDbRepo>();
+builder.Services.AddScoped<IContactRepo, ContactDbRepo>();
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
